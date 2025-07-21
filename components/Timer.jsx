@@ -4,13 +4,16 @@ export default function Timer({ timeout, onTimeout }) {
     const [remainingTime, setRemainingTime] = useState(timeout);
 
     useEffect(() => {
-        setTimeout(onTimeout, timeout);
+        const timer = setTimeout(onTimeout, timeout);
+        return () => {clearTimeout(timer)};
     }, [timeout, onTimeout]);
 
     useEffect(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             setRemainingTime(prevTimeRemaining => prevTimeRemaining - 100);
-        }, 100)
+        }, 100);
+        return () => {clearInterval(interval)};
+
     }, []);
 
     return (
